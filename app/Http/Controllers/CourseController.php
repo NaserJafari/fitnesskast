@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\CourseSubscribed;
@@ -23,7 +25,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        // Als ingelogde gebruiker de rol admin heeft, mag hij op deze pagina komen, anders wordt hij geredirect naar de index pagina
+        // Als ingelogde gebruiker de rol admin/coach heeft, mag hij op deze pagina komen, anders wordt hij geredirect naar de index pagina
         if (auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach') {
             return view('course.create');
         }
@@ -34,7 +36,7 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateCourseRequest $request)
     {
         Course::create($request->all());
 
@@ -56,15 +58,27 @@ class CourseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $course = Course::findOrFail($id);
+
+        return view('course.edit', compact('course'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCourseRequest $request, string $id)
     {
-        //
+        $course = Course::findOrFail($id);
+        $course->update($request->all());
+
+        // Verwijdere alle inschrijvingen van de cursus, als de cursus is aangepast.
+        // Feature: De sporters krijgen een mail dat de cursus is aangepast en dat ze zich opnieuw moeten inschrijven
+        $coursesSubscribed = CourseSubscribed::where('course_id', $course->id)->get();
+        foreach ($coursesSubscribed as $courseSubscribed) {
+            $courseSubscribed->delete();
+        }
+
+        return redirect()->route('course.index');
     }
 
     /**
@@ -72,10 +86,14 @@ class CourseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $course = Course::findOrFail($id);
+        $course->delete();
+
+        return redirect()->route('course.index');
     }
 
     // Functie om een gebruiker in te schrijven voor een cursus
+    // CourseSubscribed is de tabel die laat zien welke sporter is ingeschreven voor welke cursus en daarbij ook welke coach erbij hoort. Dit geldt ook voor unenroll
     public function enroll(string $id)
     {
         $course = Course::findOrFail($id);

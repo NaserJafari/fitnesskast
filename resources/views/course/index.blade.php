@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     @if (auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach')
-        <div class="p-4">
+        <div class="px-20 py-6">
             <div class="mr-2 flex justify-end">
                 <a href="{{ route('course.create') }}"
                     class="flex w-1/6 items-center justify-center rounded-lg bg-white p-6 shadow-lg">
@@ -14,7 +14,7 @@
             </div>
         </div>
     @endif
-    <section class="w-max-full p-6">
+    <section class="w-max-full h-auto px-20 py-6">
         <h2 class="mb-6 text-center text-2xl font-semibold">Alle cursussen</h2>
         <div class="rounded-lg bg-gray-400 py-8">
             <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
