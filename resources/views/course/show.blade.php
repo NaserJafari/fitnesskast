@@ -4,7 +4,7 @@
             {{ __('Cursus' . ' ' . $course->name) }}
         </h2>
     </x-slot>
-    <section class="w-full p-6">
+    <section class="w-full px-20 py-6">
         <h2 class="mb-6 text-center text-2xl font-semibold">{{ $course->name }}</h2>
         {{-- Edit en delete buttons worden alleen getoond als de gebruiker een admin of coach is.  --}}
 
