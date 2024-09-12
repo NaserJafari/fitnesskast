@@ -29,14 +29,14 @@
         <div class="rounded-lg bg-gray-400 py-8">
             <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 @foreach ($subscriptions as $subscription)
-                    <a href="{{ route('subscription.show', $subscription->id) }}"
-                        class="flex items-center justify-center rounded-lg bg-white p-6 shadow-lg transition hover:bg-zinc-600 hover:text-white hover:duration-300">
-                        <span class="text-xl font-semibold">{{ $subscription->name }}</span>
-                    </a>
+                    <span
+                        class="flex items-center justify-center rounded-lg bg-white p-6 text-xl font-semibold shadow-lg transition hover:bg-zinc-600 hover:text-white hover:duration-300"">
+                        {{ $subscription->name }}
+                    </span>
                 @endforeach
                 @if ($subscriptions->isEmpty())
                     <div class="flex items-center justify-center rounded-lg bg-white p-6 shadow-lg">
-                        <span class="text-xl font-semibold">Cursussen komen er nog aan!</span>
+                        <span class="text-xl font-semibold">Abonnementen komen er nog aan!</span>
                     </div>
                 @endif
             </div>

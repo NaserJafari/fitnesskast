@@ -15,9 +15,13 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
+        if (auth()->user()->subscription->id == 6 || auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach') {
+            $courses = Course::all();
 
-        return view('course.index', compact('courses'));
+            return view('course.index', compact('courses'));
+        }
+
+        return redirect()->route('subscription.index');
     }
 
     /**
@@ -26,7 +30,7 @@ class CourseController extends Controller
     public function create()
     {
         // Als ingelogde gebruiker de rol admin/coach heeft, mag hij op deze pagina komen, anders wordt hij geredirect naar de index pagina
-        if (auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach') {
+        if (auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach' || auth()->user()->subscription->id == 6) {
             return view('course.create');
         }
 
@@ -48,9 +52,13 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        $course = Course::findOrFail($id);
+        if (auth()->user()->subscription->id == 6 || auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach') {
+            $course = Course::findOrFail($id);
 
-        return view('course.show', compact('course'));
+            return view('course.show', compact('course'));
+        }
+
+        return redirect()->route('subscription.index');
     }
 
     /**
@@ -64,7 +72,7 @@ class CourseController extends Controller
             return view('course.edit', compact('course'));
         }
 
-        return redirect()->route('course.index');
+        return redirect()->route('subscription.index');
     }
 
     /**
@@ -104,32 +112,40 @@ class CourseController extends Controller
     // CourseSubscribed is de tabel die laat zien welke sporter is ingeschreven voor welke cursus en daarbij ook welke coach erbij hoort. Dit geldt ook voor unenroll
     public function enroll(string $id)
     {
-        $course = Course::findOrFail($id);
-        $user = auth()->user();
-        CourseSubscribed::create([
-            'course_id' => $course->id,
-            'user_id' => $user->id
-        ]);
+        if (auth()->user()->subscription->id == 6) {
+            $course = Course::findOrFail($id);
+            $user = auth()->user();
+            CourseSubscribed::create([
+                'course_id' => $course->id,
+                'user_id' => $user->id
+            ]);
 
-        $course->update([
-            'max_spot' => $course->max_spot - 1
-        ]);
+            $course->update([
+                'max_spot' => $course->max_spot - 1
+            ]);
 
-        return redirect()->route('course.index');
+            return redirect()->route('course.index');
+        }
+
+        return redirect()->route('subscription.index');
     }
 
     // Functie om een gebruiker uit te schrijven voor een cursus
     public function unenroll(string $id)
     {
-        $course = Course::findOrFail($id);
-        $user = auth()->user();
-        $courseSubscribed = CourseSubscribed::where('course_id', $course->id)->where('user_id', $user->id)->first();
-        $courseSubscribed->delete();
+        if (auth()->user()->subscription->id == 6) {
+            $course = Course::findOrFail($id);
+            $user = auth()->user();
+            $courseSubscribed = CourseSubscribed::where('course_id', $course->id)->where('user_id', $user->id)->first();
+            $courseSubscribed->delete();
 
-        $course->update([
-            'max_spot' => $course->max_spot + 1
-        ]);
+            $course->update([
+                'max_spot' => $course->max_spot + 1
+            ]);
 
-        return redirect()->route('course.index');
+            return redirect()->route('course.index');
+        }
+
+        return redirect()->route('subscription.index');
     }
 }

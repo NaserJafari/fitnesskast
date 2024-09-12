@@ -15,9 +15,13 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
-                        {{ __('Cursus') }}
-                    </x-nav-link>
+                    @if (auth()->user()->subscription_id == 6 ||
+                            auth()->user()->role->name === 'admin' ||
+                            auth()->user()->role->name === 'coach')
+                        <x-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
+                            {{ __('Cursus') }}
+                        </x-nav-link>
+                    @endif
                     <x-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.index')">
                         {{ __('Abonnement') }}
                     </x-nav-link>
@@ -85,9 +89,11 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
-                {{ __('Cursus') }}
-            </x-responsive-nav-link>
+            @if (auth()->user()->subscription_id == 6)
+                <x-responsive-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
+                    {{ __('Cursus') }}
+                </x-responsive-nav-link>
+            @endif
             <x-responsive-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.index')">
                 {{ __('Abonnement') }}
             </x-responsive-nav-link>
