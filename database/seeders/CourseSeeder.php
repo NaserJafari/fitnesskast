@@ -18,16 +18,19 @@ class CourseSeeder extends Seeder
                 'name' => 'Yoga',
                 'description' => 'Yoga is goed voor de geest en het lichaam.',
                 'max_spot' => 30,
+                'facility_id' => 1,
             ],
             [
                 'name' => 'Pilates',
                 'description' => 'Pilates is goed voor de geest en het lichaam.',
                 'max_spot' => 20,
+                'facility_id' => 2,
             ],
             [
                 'name' => 'Paaldansen',
                 'description' => 'Paaldansen is leuk en gezellig.',
                 'max_spot' => 10,
+                'facility_id' => 3,
             ],
         ]);
     }
