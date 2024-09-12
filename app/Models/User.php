@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'subscription_id',
     ];
 
     /**
@@ -50,8 +51,15 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    // Relatie met de course_subscribed tabel. Hiermee laat kan ik laten zien welke courses een user volgt.
     public function subscribedCourses()
     {
         return $this->belongsToMany(Course::class, 'course_subscribed', 'user_id', 'course_id');
+    }
+
+    // Relatie met de subscriptions(abonnementen) tabel
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
     }
 }

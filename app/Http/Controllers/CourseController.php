@@ -58,9 +58,13 @@ class CourseController extends Controller
      */
     public function edit(string $id)
     {
-        $course = Course::findOrFail($id);
+        if (auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach') {
+            $course = Course::findOrFail($id);
 
-        return view('course.edit', compact('course'));
+            return view('course.edit', compact('course'));
+        }
+
+        return redirect()->route('course.index');
     }
 
     /**
@@ -86,8 +90,12 @@ class CourseController extends Controller
      */
     public function destroy(string $id)
     {
-        $course = Course::findOrFail($id);
-        $course->delete();
+        if (auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach') {
+            $course = Course::findOrFail($id);
+            $course->delete();
+
+            return redirect()->route('course.index');
+        }
 
         return redirect()->route('course.index');
     }

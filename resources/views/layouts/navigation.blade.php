@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
                         {{ __('Cursus') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.index')">
+                        {{ __('Abonnement') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +84,12 @@
         <div class="space-y-1 pb-3 pt-2">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
+                {{ __('Cursus') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('subscription.index')" :active="request()->routeIs('subscription.index')">
+                {{ __('Abonnement') }}
             </x-responsive-nav-link>
         </div>
 
