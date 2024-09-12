@@ -100,6 +100,10 @@ class CourseController extends Controller
     {
         if (auth()->user()->role->name === 'admin' || auth()->user()->role->name === 'coach') {
             $course = Course::findOrFail($id);
+            $coursesSubscribed = CourseSubscribed::where('course_id', $course->id)->get();
+            foreach ($coursesSubscribed as $courseSubscribed) {
+                $courseSubscribed->delete();
+            }
             $course->delete();
 
             return redirect()->route('course.index');
