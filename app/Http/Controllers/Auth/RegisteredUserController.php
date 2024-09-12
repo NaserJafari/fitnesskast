@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $subscriptions = Subscription::where('id', '>', 1)->get();
+        $subscriptions = Subscription::where('id', '>', 2)->get();
 
         return view('auth.register', compact('subscriptions'));
     }
