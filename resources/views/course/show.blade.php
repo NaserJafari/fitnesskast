@@ -27,25 +27,29 @@
             </div>
 
             <!-- Hier kunnen sporters zich inschrijven voor de cursus  -->
-            <div class="col-span-1 flex flex-col items-center">
-                @if (auth()->user()->subscribedCourses->contains($course->id))
-                    <h3>Je bent ingeschreven voor deze cursus</h3>
-                    <form action="{{ route('course.unenroll', $course->id) }}" method="post">
-                        @csrf
-                        <button type="submit" class="mb-4 rounded-lg bg-red-400 px-4 py-2 font-semibold text-white">
-                            Uitschrijven
-                        </button>
-                    </form>
-                @else
-                    <form action="{{ route('course.enroll', $course->id) }}" method="post">
-                        @csrf
-                        <button type="submit" class="mb-4 rounded-lg bg-cyan-400 px-4 py-2 font-semibold text-white">
-                            Inschrijven
-                        </button>
-                    </form>
-                @endif
-                <p class="rounded-lg bg-gray-200 px-4 py-1 text-sm">Aantal plek = {{ $course->max_spot }}</p>
-            </div>
+            @if (auth()->user()->role->name === 'sporter')
+                <div class="col-span-1 flex flex-col items-center">
+                    @if (auth()->user()->subscribedCourses->contains($course->id))
+                        <h3>Je bent ingeschreven voor deze cursus</h3>
+                        <form action="{{ route('course.unenroll', $course->id) }}" method="post">
+                            @csrf
+                            <button type="submit"
+                                class="mb-4 rounded-lg bg-red-400 px-4 py-2 font-semibold text-white">
+                                Uitschrijven
+                            </button>
+                        </form>
+                    @else
+                        <form action="{{ route('course.enroll', $course->id) }}" method="post">
+                            @csrf
+                            <button type="submit"
+                                class="mb-4 rounded-lg bg-cyan-400 px-4 py-2 font-semibold text-white">
+                                Inschrijven
+                            </button>
+                        </form>
+                    @endif
+                    <p class="rounded-lg bg-gray-200 px-4 py-1 text-sm">Aantal plek = {{ $course->max_spot }}</p>
+                </div>
+            @endif
 
             <!-- Beschrijving van de cursus -->
             <div class="col-span-1 rounded-lg bg-gray-300 p-8">
