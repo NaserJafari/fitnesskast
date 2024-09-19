@@ -46,9 +46,13 @@ class SubscriptionController extends Controller
      */
     public function edit(string $id)
     {
-        $subscriptions = Subscription::where('id', '>', 2)->get();
+        if (auth()->user()->role->name === "sporter") {
+            $subscriptions = Subscription::where('id', '>', 2)->get();
 
-        return view('subscription.edit', compact('subscriptions'));
+            return view('subscription.edit', compact('subscriptions'));
+        }
+
+        return redirect()->route('subscription.index');
     }
 
     /**

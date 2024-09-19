@@ -16,16 +16,18 @@
     @endif --}}
     <section class="w-max-full h-auto px-20 py-6">
         <h2 class="mb-6 text-center text-2xl font-semibold">Alle abonnementen</h2>
-        <h3 class="text-1xl mb-6 text-center font-semibold">Uw huidige abonnement:
-            {{ auth()->user()->subscription->name }}</h3>
-        <div class="flex justify-center">
-            <div class="my-2 flex w-1/2 justify-center">
-                <a href="{{ route('subscription.edit', auth()->user()->subscription->id) }}"
-                    class="flex items-center justify-center rounded-lg bg-white p-6 shadow-lg transition hover:bg-zinc-600 hover:text-white hover:duration-300">
-                    <span class="text-xl font-semibold">Abonnement aanpassen</span>
-                </a>
+        @if (auth()->user()->role->name === 'sporter')
+            <h3 class="text-1xl mb-6 text-center font-semibold">Uw huidige abonnement:
+                {{ auth()->user()->subscription->name }}</h3>
+            <div class="flex justify-center">
+                <div class="my-2 flex w-1/2 justify-center">
+                    <a href="{{ route('subscription.edit', auth()->user()->subscription->id) }}"
+                        class="flex items-center justify-center rounded-lg bg-white p-6 shadow-lg transition hover:bg-zinc-600 hover:text-white hover:duration-300">
+                        <span class="text-xl font-semibold">Abonnement aanpassen</span>
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
         <div class="rounded-lg bg-gray-400 py-8">
             <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 @foreach ($subscriptions as $subscription)
